@@ -28,14 +28,10 @@ while not user_end:
 desired_genres = user_input_list
 # boolean mask for rows with matching mask
 mask = df['Main Genres'].apply(lambda x: all(genre in x for genre in desired_genres))
+#filter df off mask
+filtered_df = df[mask]
 # count rows that match
 matched_count = mask.sum()
-# return top 5 rows from mask
-matched_top5_title = df.loc[mask, 'Title'].head(5).tolist()
-matched_top5_year = df.loc[mask, 'Release Year'].head(5).tolist()
-matched_top5_rating = df.loc[mask, 'Rating (Out of 10)'].head(5).tolist()
-matched_top5_summary = df.loc[mask, 'Summary'].head(5).tolist()
-matched_top5 = list(zip([x+1 for x in range(5)], matched_top5_title, matched_top5_year, matched_top5_rating))
 
 def get_results():
     if matched_count:
@@ -43,8 +39,9 @@ def get_results():
         if matched_count > 5:
             print("The top 5 most popular are:")
         print('-'*75)
-        for idx, title, year, rating in matched_top5:
-            print(f"{idx} | {title} ({int(year)}), [{rating}/10]")
+
+        for idx in range(5):
+            print(f"{idx+1} | {filtered_df['Title'].iloc[idx]} ({int(filtered_df['Release Year'].iloc[idx])}), [{filtered_df['Rating (Out of 10)'].iloc[idx]}/10]")
     else:
         print(f"No movie found with {desired_genres}")
     
@@ -54,10 +51,11 @@ user_end = False
 while not user_end:
     print('Choose movie to read its summary:')
     user_input = int(input())
+    movie_idx = user_input - 1
     print('='*75)
-    print(f'{matched_top5[user_input-1][1]} ({int(matched_top5[user_input-1][2])}), [{matched_top5[user_input-1][3]}/10]')
+    print(f'{filtered_df['Title'].iloc[movie_idx]} ({int(filtered_df['Release Year'].iloc[movie_idx])}), [{filtered_df['Rating (Out of 10)'].iloc[movie_idx]}/10]')
     print('-'*75)
-    print(textwrap.fill(matched_top5_summary[user_input-1], 75))
+    print(textwrap.fill(filtered_df['Summary'].iloc[movie_idx], 75))
     print('-'*75)
     print('Read another summary? Y/N:')
     user_input = input()
