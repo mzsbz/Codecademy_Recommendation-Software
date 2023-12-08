@@ -12,8 +12,19 @@ unique_genres_list = list(unique_genres)
 print(unique_genres_list)
 print('-'*50)
 
+user_input_list = []
+user_end = False
+while not user_end:
+    print('Choose a Genre to add to search:')
+    user_input = input()
+    user_input_list.append(user_input)
+    print('Add more Genres? Y/N:')
+    user_input = input()
+    if user_input.lower() == 'n':
+        user_end = True
+
 # list of genres to match
-desired_genres = ['Action']
+desired_genres = user_input_list
 # boolean mask for rows with matching mask
 mask = df['Main Genres'].apply(lambda x: all(genre in x for genre in desired_genres))
 # count rows that match
