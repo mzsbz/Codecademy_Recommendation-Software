@@ -17,7 +17,7 @@ class LoadData:
         print(unique_list)
         print('-'*75)
     
-    def filter_data(self, user_input_list):
+    def return_filtered(self, user_input_list):
         # list of genres to match and boolean mask for rows with matching mask
         self.desired_genres = user_input_list
         mask = self.df[self.column_filter].apply(lambda x: all(genre in x for genre in self.desired_genres))
@@ -25,22 +25,13 @@ class LoadData:
         #filter df off mask and count rows that match
         self.filtered_df = self.df[mask]
         self.matched_count = mask.sum()
-    
-    def print_filtered(self):
-        if self.matched_count:
-            string_matched = f"{self.matched_count} {'movies' if self.matched_count > 1 else 'movie'} found with {self.desired_genres}"
-            print(string_matched)
-            if self.matched_count > 5:
-                print("The top 5 most popular are:")
-            print('-'*75)
 
-            string_filtered = ''
-            for idx in range(5):
-                string_result = f"{idx+1} | {self.filtered_df['Title'].iloc[idx]} ({int(self.filtered_df['Release Year'].iloc[idx])}), [{self.filtered_df['Rating (Out of 10)'].iloc[idx]}/10] \n"
-                string_filtered += string_result
-            print(string_filtered)
-        else:
-            print(f"No movie found with {self.desired_genres}")
+        string_filtered = ''
+        for idx in range(5):
+            string_result = f"{idx+1} | {self.filtered_df['Title'].iloc[idx]} ({int(self.filtered_df['Release Year'].iloc[idx])}), [{self.filtered_df['Rating (Out of 10)'].iloc[idx]}/10] \n"
+            string_filtered += string_result
+
+        return self.matched_count, string_filtered
 
     def return_summary(self, user_input):
         movie_idx = user_input - 1
