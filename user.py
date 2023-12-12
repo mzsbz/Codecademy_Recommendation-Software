@@ -15,8 +15,19 @@ class User:
             user_input = input()
             if user_input.lower() == 'n':
                 user_end = True
-        
-        return self.user_input_list
+    
+    def print_filtered(self, data):
+        matched_count, string_filtered = data.return_filtered(self.user_input_list)
+
+        if matched_count:
+            string_matched = f"{matched_count} {'movies' if matched_count > 1 else 'movie'} found with {self.user_input_list}"
+            print(string_matched)
+            if matched_count > 5:
+                print("The top 5 most popular are:")
+            print('-'*75)
+            print(string_filtered)
+        else:
+            print(f"No movie found with {self.user_input_list}")
     
     def print_summary(self, data):
         user_end = False
