@@ -1,17 +1,8 @@
-import pandas as pd
+from data import LoadData
 import textwrap
 
-df = pd.read_csv('dataset/IMDbMovies-Clean.csv')
-
-# drop nan values from Main Genres
-df = df.dropna(subset=['Main Genres'])
-# convert csv string in Main Genres into list and handle NaN
-df['Main Genres'] = df['Main Genres'].apply(lambda x: x.split(','))
-# transform list in column into rows then return list of unique items
-unique_genres = df['Main Genres'].explode().unique()
-unique_genres_list = list(unique_genres)
-print(unique_genres_list)
-print('-'*50)
+data = LoadData('dataset/IMDbMovies-Clean.csv', 'Main Genres')
+print(data.get_uniques())
 
 user_input_list = []
 user_end = False
@@ -24,28 +15,8 @@ while not user_end:
     if user_input.lower() == 'n':
         user_end = True
 
-# list of genres to match
-desired_genres = user_input_list
-# boolean mask for rows with matching mask
-mask = df['Main Genres'].apply(lambda x: all(genre in x for genre in desired_genres))
-#filter df off mask
-filtered_df = df[mask]
-# count rows that match
-matched_count = mask.sum()
-
-def get_results():
-    if matched_count:
-        print(f"{matched_count} {'movies' if matched_count > 1 else 'movie'} found with {desired_genres}")
-        if matched_count > 5:
-            print("The top 5 most popular are:")
-        print('-'*75)
-
-        for idx in range(5):
-            print(f"{idx+1} | {filtered_df['Title'].iloc[idx]} ({int(filtered_df['Release Year'].iloc[idx])}), [{filtered_df['Rating (Out of 10)'].iloc[idx]}/10]")
-    else:
-        print(f"No movie found with {desired_genres}")
-    
-get_results()
+filtered_df, matched_count = data.filter_data(user_input_list)
+data.print_filtered()
 
 user_end = False
 while not user_end:
