@@ -36,7 +36,7 @@ class LoadData:
     def return_summary(self, user_input):
         movie_idx = user_input - 1
 
-        string_summary_head = '='*75 + '\n' + f'{self.filtered_df['Title'].iloc[movie_idx]} ({int(self.filtered_df['Release Year'].iloc[movie_idx])}), [{self.filtered_df['Rating (Out of 10)'].iloc[movie_idx]}/10]'
+        string_summary_head = '='*75 + '\n' + f'{self.filtered_df['Title'].iloc[movie_idx]} ({int(self.filtered_df['Release Year'].iloc[movie_idx])}), [{self.filtered_df['Rating (Out of 10)'].iloc[movie_idx]}/10] | {self.filtered_df['Main Genres'].iloc[movie_idx]}'
 
         string_summary_body = '-'*75 + '\n' + textwrap.fill(self.filtered_df['Summary'].iloc[movie_idx], 75)
 
