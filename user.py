@@ -52,3 +52,13 @@ class User:
         if user_input.lower() == 'y':
             recommender.import_data(self.pruned_data_list)
             recommender.calculate_similarity()
+            sorted_list = recommender.heapsort()
+            
+            # print("reverse list")
+            sorted_list.reverse()
+            # print(sorted_list)
+            
+            print("Similar movies to consider:")
+            print('-'*75)
+            for idx in range(1, 4):
+                print(f'{idx} | {sorted_list[idx][0]} ({int(sorted_list[idx][1])}), [{sorted_list[idx][4]}/10]')

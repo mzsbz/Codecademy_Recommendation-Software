@@ -8,8 +8,6 @@ class Recommender:
     
     def import_data(self, data):
         self.data = data
-        print(self.max_heap.heap_list)
-        print(self.max_heap.count)
 
     def deviation_rating(self, item, comparator):
         ratings = {'G':1, 'PG':2, 'PG-13':3, 'NC-17':4, 'R':5, 'Not Rated':5}
@@ -37,6 +35,18 @@ class Recommender:
             score_similarity = 100 - self.deviation(item[4], comparator[4])
             similarity = round((rating_similarity + score_similarity + (runtime_similarity*0.1))/210 * 100, 2)
             item.append(similarity)
-        print(self.data)
+        # print(self.data)
+
+    def heapsort(self):
+        sort = []
+
+        for item in self.data:
+            self.max_heap.add(item)
+
+        while self.max_heap.count > 0:
+            max_value = self.max_heap.retrieve_max()
+            sort.insert(0, max_value)
+
+        return sort
 
         
