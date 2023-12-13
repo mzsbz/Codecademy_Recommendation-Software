@@ -7,22 +7,29 @@ class User:
     def get_genres(self):
         self.user_input_list = []
         user_end = False
+        count = 0
         while not user_end:
-            user_input = input('Choose a Genre to add to search: ')
+            if count > 0:
+                user_input = input('Type Genre to add, (N) to continue: ')
+                if user_input.lower() == 'n':
+                    user_end = True
+                    break
+            else:
+                user_input = input('Choose a Genre to add to search: ')
+            
+            count += 1
             self.user_input_list.append(user_input)
-            user_input = input('Add more Genres? Y/N: ')
-            if user_input.lower() == 'n':
-                user_end = True
+            
     
     def print_filtered(self, data):
         matched_count, string_filtered, filtered_df = data.return_filtered(self.user_input_list)
 
         if matched_count:
-            string_matched = f"{matched_count} {'movies' if matched_count > 1 else 'movie'} found with {self.user_input_list}"
+            string_matched = f"\n{matched_count} {'movies' if matched_count > 1 else 'movie'} found with {self.user_input_list}"
             print(string_matched)
             if matched_count > 5:
                 print("The top 5 most popular are:")
-            print('-'*75)
+            print('='*75)
             print(string_filtered)
         else:
             print(f"No movie found with {self.user_input_list}")
@@ -34,7 +41,7 @@ class User:
             if count > 0:
                 self.print_filtered(data)
 
-            self.choice_filtered = int(input('(1 - 5) Read Details: '))
+            self.choice_filtered = int(input('Read Details (1 - 5): '))
 
             string_summary_head, string_summary_body = data.return_details(self.choice_filtered)
 
