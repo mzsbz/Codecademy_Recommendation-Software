@@ -31,7 +31,7 @@ class LoadData:
             string_result = f"{idx+1} | {self.filtered_df['Title'].iloc[idx]} ({int(self.filtered_df['Release Year'].iloc[idx])}), [{self.filtered_df['Rating (Out of 10)'].iloc[idx]}/10] \n"
             string_filtered += string_result
 
-        return self.matched_count, string_filtered
+        return self.matched_count, string_filtered, self.filtered_df
 
     def return_summary(self, user_input):
         movie_idx = user_input - 1
@@ -41,3 +41,16 @@ class LoadData:
         string_summary_body = '-'*75 + '\n' + textwrap.fill(self.filtered_df['Summary'].iloc[movie_idx], 75)
 
         return string_summary_head, string_summary_body
+    
+    def return_pruned(self, user_input):
+
+        chosen_genres = self.filtered_df['Main Genres'].iloc[user_input -1]
+        mask = self.filtered_df[self.column_filter].apply(lambda x: all(genre in x for genre in chosen_genres))
+
+        #filter df off mask and count rows that match
+        self.pruned_df = self.filtered_df[mask]
+
+        selected_columns = ['Title', 'Release Year', 'Motion Picture Rating', 'Runtime (Minutes)', 'Rating (Out of 10)', 'Main Genres']
+        pruned_df_list = self.pruned_df[selected_columns].values.tolist()
+
+        return pruned_df_list
