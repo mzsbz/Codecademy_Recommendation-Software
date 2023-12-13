@@ -12,5 +12,5 @@ data.print_uniques()
 
 user.get_genres()
 user.print_filtered(data)
-user.print_summary(data)
+user.print_details(data)
 user.print_similar(recommender)

@@ -33,7 +33,7 @@ class LoadData:
 
         return self.matched_count, string_filtered, self.filtered_df
 
-    def return_summary(self, user_input):
+    def return_details(self, user_input):
         movie_idx = user_input - 1
 
         string_summary_head = '='*75 + '\n' + f'{self.filtered_df['Title'].iloc[movie_idx]} ({int(self.filtered_df['Release Year'].iloc[movie_idx])}), [{self.filtered_df['Rating (Out of 10)'].iloc[movie_idx]}/10] | {self.filtered_df['Main Genres'].iloc[movie_idx]}'
