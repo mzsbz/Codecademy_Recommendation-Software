@@ -24,9 +24,8 @@ We will use Pandas to narrow down the dataset that we will work with. Then using
 
 ## Recommender Plan
 1. Prune data based on chosen movie 'Main Genres'
-2. Put data into ??? data structure.
-3. Use ??? to find movies with greater similiarity based on 'Motion Picture Rating' and 'Runtime'
+2. Put data into **MaxHeap** data structure.
+3. Use **HeapSort** to find movies with greater similiarity based on 'Motion Picture Rating' and 'Runtime'
 
 ## To-do:
-- Refactor filters, inputs and print
-- Create movie graph to recommend 3 other movies similar to selected movie
+- General refactor
