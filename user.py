@@ -17,7 +17,7 @@ class User:
                 user_end = True
     
     def print_filtered(self, data):
-        matched_count, string_filtered = data.return_filtered(self.user_input_list)
+        matched_count, string_filtered, filtered_df = data.return_filtered(self.user_input_list)
 
         if matched_count:
             string_matched = f"{matched_count} {'movies' if matched_count > 1 else 'movie'} found with {self.user_input_list}"
@@ -33,9 +33,9 @@ class User:
         user_end = False
         while not user_end:
             print('Choose movie to read its summary:')
-            user_input = int(input())
+            self.choice_filtered = int(input())
 
-            string_summary_head, string_summary_body = data.return_summary(user_input)
+            string_summary_head, string_summary_body = data.return_summary(self.choice_filtered)
 
             print(string_summary_head)
             print(string_summary_body)
@@ -45,5 +45,10 @@ class User:
             if user_input.lower() == 'n':
                 user_end = True
 
-    def print_similar(self, data):
+        self.pruned_data_list = data.return_pruned(self.choice_filtered)
+
+    def print_similar(self, recommender):
         user_input = input('Find Similar? (Y/N) \n')
+        if user_input.lower() == 'y':
+            recommender.import_data(self.pruned_data_list)
+            recommender.calculate_similarity()
