@@ -22,12 +22,12 @@ class User:
             
     
     def print_filtered(self, data):
-        matched_count, string_filtered, filtered_df = data.return_filtered(self.user_input_list)
+        self.matched_count, string_filtered, filtered_df = data.return_filtered(self.user_input_list)
 
-        if matched_count:
-            string_matched = f"\n{matched_count} {'movies' if matched_count > 1 else 'movie'} found with {self.user_input_list}"
+        if self.matched_count:
+            string_matched = f"\n{self.matched_count} {'movies' if self.matched_count > 1 else 'movie'} found with {self.user_input_list}"
             print(string_matched)
-            if matched_count > 5:
+            if self.matched_count > 5:
                 print("The top 5 most popular are:")
             print('='*75)
             print(string_filtered)
@@ -41,7 +41,8 @@ class User:
             if count > 0:
                 self.print_filtered(data)
 
-            self.choice_filtered = int(input('Read Details (1 - 5): '))
+            input_string = f'Read Details (1 - {5 if self.matched_count >= 5 else self.matched_count}): '
+            self.choice_filtered = int(input(input_string))
 
             string_summary_head, string_summary_body = data.return_details(self.choice_filtered)
 
@@ -73,5 +74,10 @@ class User:
             # print(sorted_list)
             print("\nSimilar movies to consider:")
             print('='*75)
-            for idx in range(1, 4):
-                print(f'{idx} | {sorted_list[idx][0]} ({int(sorted_list[idx][1])}), [{sorted_list[idx][4]}/10]')
+            max_output = 4 if self.matched_count >= 5 else self.matched_count
+
+            if self.matched_count > 1:
+                for idx in range(1, max_output):
+                    print(f'{idx} | {sorted_list[idx][0]} ({int(sorted_list[idx][1])}), [{sorted_list[idx][4]}/10]')
+            else:
+                print('There are no similar movies.')

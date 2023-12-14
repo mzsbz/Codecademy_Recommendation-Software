@@ -27,7 +27,9 @@ class LoadData:
         self.matched_count = mask.sum()
 
         string_filtered = ''
-        for idx in range(5):
+        max_output = 5 if self.matched_count >= 5 else self.matched_count
+
+        for idx in range(max_output):
             string_result = f"{idx+1} | {self.filtered_df['Title'].iloc[idx]} ({int(self.filtered_df['Release Year'].iloc[idx])}), [{self.filtered_df['Rating (Out of 10)'].iloc[idx]}/10] \n"
             string_filtered += string_result
 
